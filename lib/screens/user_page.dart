@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:market/constants/colors.dart';
-import 'package:market/constants/my_icons.dart';
-import 'package:market/provider/dark_theme_provider.dart';
-import 'package:market/widget/userListTile.dart';
+import 'package:e_commerce/constants/colors.dart';
+import 'package:e_commerce/constants/my_icons.dart';
+import 'package:e_commerce/provider/dark_theme_provider.dart';
+import 'package:e_commerce/widget/userListTile.dart';
 import 'package:list_tile_switch/list_tile_switch.dart';
 import 'package:provider/provider.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:market/constants/colors.dart';
-import 'package:market/constants/my_icons.dart';
-import 'package:market/provider/dark_theme_provider.dart';
-import 'package:market/widget/stepper.dart';
+import 'package:e_commerce/constants/colors.dart';
+import 'package:e_commerce/constants/my_icons.dart';
+import 'package:e_commerce/provider/dark_theme_provider.dart';
+import 'package:e_commerce/widget/stepper.dart';
 import 'package:provider/provider.dart';
 
 class CartFull extends StatefulWidget {

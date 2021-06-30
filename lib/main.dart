@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:market/constants/theme_data.dart';
-import 'package:market/provider/dark_theme_provider.dart';
+import 'package:e_commerce/constants/theme_data.dart';
+import 'package:e_commerce/provider/dark_theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'bottom_bar.dart';

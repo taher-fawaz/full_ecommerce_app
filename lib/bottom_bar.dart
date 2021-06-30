@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:market/constants/my_icons.dart';
-import 'package:market/screens/feeds_page.dart';
-import 'package:market/screens/home_page.dart';
+import 'package:e_commerce/constants/my_icons.dart';
+import 'package:e_commerce/screens/feeds_page.dart';
+import 'package:e_commerce/screens/home_page.dart';
 
 import 'screens/cart_page.dart';
 import 'screens/search_page.dart';

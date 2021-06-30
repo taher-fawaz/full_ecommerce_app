@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:market/provider/dark_theme_provider.dart';
-import 'package:market/widget/button_widget.dart';
-import 'package:market/widget/headline_widget.dart';
-import 'package:market/widget/subtitle_widget.dart';
+import 'package:e_commerce/provider/dark_theme_provider.dart';
+import 'package:e_commerce/widget/button_widget.dart';
+import 'package:e_commerce/widget/headline_widget.dart';
+import 'package:e_commerce/widget/subtitle_widget.dart';
 import 'package:provider/provider.dart';
 
 class CartEmpty extends StatelessWidget {
