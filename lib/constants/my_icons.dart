@@ -11,4 +11,5 @@ class AppIcons {
   static const cross = FontAwesomeIcons.removeFormat;
   static const minus = FontAwesomeIcons.minus;
   static const plus = FontAwesomeIcons.plus;
+  static const trash = FontAwesomeIcons.trash;
 }

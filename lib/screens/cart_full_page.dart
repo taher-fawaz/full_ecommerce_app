@@ -3,15 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:e_commerce/constants/colors.dart';
 import 'package:e_commerce/constants/my_icons.dart';
 import 'package:e_commerce/provider/dark_theme_provider.dart';
-import 'package:e_commerce/widget/stepper.dart';
 import 'package:provider/provider.dart';
 
-class CartFull extends StatefulWidget {
+class CartProductCard extends StatefulWidget {
   @override
-  _CartFullState createState() => _CartFullState();
+  _CartProductCardState createState() => _CartProductCardState();
 }
 
-class _CartFullState extends State<CartFull> {
+class _CartProductCardState extends State<CartProductCard> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
@@ -112,81 +111,80 @@ class _CartFullState extends State<CartFull> {
                                 ? Colors.brown.shade900
                                 : Theme.of(context).accentColor),
                       ),
-                      // Spacer(),
-
-                      // Material(
-                      //   color: Colors.transparent,
-                      //   child: InkWell(
-                      //     borderRadius: BorderRadius.circular(4.0),
-                      //     // splashColor: ,
-                      //     onTap: () {},
-                      //     child: Container(
-                      //       child: Padding(
-                      //         padding: const EdgeInsets.all(5.0),
-                      //         child: FaIcon(
-                      //           AppIcons.minus,
-                      //           color: Colors.red,
-                      //           size: 22,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // Card(
-                      //   elevation: 12,
-                      //   child: Container(
-                      //     width: MediaQuery.of(context).size.width * 0.12,
-                      //     padding: const EdgeInsets.all(8.0),
-                      //     decoration: BoxDecoration(
-                      //       gradient: LinearGradient(colors: [
-                      //         ColorsConsts.gradiendLStart,
-                      //         ColorsConsts.gradiendLEnd,
-                      //       ], stops: [
-                      //         0.0,
-                      //         0.7
-                      //       ]),
-                      //     ),
-                      //     child: Text(
-                      //       '154',
-                      //       textAlign: TextAlign.center,
-                      //     ),
-                      //   ),
-                      // ),
-                      // Material(
-                      //   color: Colors.transparent,
-                      //   child: InkWell(
-                      //     borderRadius: BorderRadius.circular(4.0),
-                      //     // splashColor: ,
-                      //     onTap: () {},
-                      //     child: Container(
-                      //       child: Padding(
-                      //         padding: const EdgeInsets.all(5.0),
-                      //         child: FaIcon(
-                      //           AppIcons.plus,
-                      //           color: Colors.green,
-                      //           size: 22,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Spacer(),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(4.0),
+                          // splashColor: ,
+                          onTap: () {},
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: FaIcon(
+                                AppIcons.minus,
+                                color: Colors.red,
+                                size: 22,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        elevation: 12,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.12,
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                              ColorsConsts.gradiendLStart,
+                              ColorsConsts.gradiendLEnd,
+                            ], stops: [
+                              0.0,
+                              0.7
+                            ]),
+                          ),
+                          child: Text(
+                            '154',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(4.0),
+                          // splashColor: ,
+                          onTap: () {},
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: FaIcon(
+                                AppIcons.plus,
+                                color: Colors.green,
+                                size: 22,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  Container(
-                    // padding:
-                    //     EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    width: 100,
-                    height: 100,
-                    child: StepperTouch(
-                      buttonsColor: Colors.blue,
-                      counterColor: Colors.green,
-                      dragButtonColor: Colors.black,
-                      initialValue: 0,
-                      direction: Axis.horizontal,
-                      withSpring: false,
-                      onChanged: (int value) => print('new value $value'),
-                    ),
-                  ),
+                  // Container(
+                  //   // padding:
+                  //   //     EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  //   width: 100,
+                  //   height: 100,
+                  //   child: StepperTouch(
+                  //     buttonsColor: Colors.blue,
+                  //     counterColor: Colors.green,
+                  //     dragButtonColor: Colors.black,
+                  //     initialValue: 0,
+                  //     direction: Axis.horizontal,
+                  //     withSpring: false,
+                  //     onChanged: (int value) => print('new value $value'),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
