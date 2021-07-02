@@ -22,3 +22,16 @@ class ColorsConsts {
   static Color starterColor = Color(0xFF8E24AA); //purple 600
   static Color purple800 = Color(0xFF6A1B9A);
 }
+
+BoxDecoration backgroundDecoration(double raduis) {
+  return BoxDecoration(
+    borderRadius: BorderRadius.circular(raduis),
+    gradient: LinearGradient(colors: [
+      ColorsConsts.gradiendLStart,
+      ColorsConsts.gradiendLEnd,
+    ], stops: [
+      0.0,
+      0.7
+    ]),
+  );
+}

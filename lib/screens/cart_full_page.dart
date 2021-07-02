@@ -135,15 +135,7 @@ class _CartProductCardState extends State<CartProductCard> {
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.12,
                           padding: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              ColorsConsts.gradiendLStart,
-                              ColorsConsts.gradiendLEnd,
-                            ], stops: [
-                              0.0,
-                              0.7
-                            ]),
-                          ),
+                          decoration: backgroundDecoration(0),
                           child: Text(
                             '154',
                             textAlign: TextAlign.center,
