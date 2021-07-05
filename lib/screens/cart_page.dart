@@ -1,7 +1,7 @@
 import 'package:e_commerce/widget/checkput_section.dart';
 import 'package:flutter/material.dart';
-import 'package:e_commerce/screens/cart_empty_page.dart';
-import 'package:e_commerce/screens/cart_full_page.dart';
+import 'package:e_commerce/widget/cart_empty.dart';
+import 'package:e_commerce/widget/cart_product_card.dart';
 
 class CartScreen extends StatelessWidget {
   @override
