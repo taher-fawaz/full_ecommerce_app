@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/constants/colors.dart';
 import 'package:e_commerce/screens/user_page.dart';
 import 'package:e_commerce/widget/category_item_widget.dart';
+import 'package:e_commerce/widget/popular_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
@@ -138,7 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   items: _items,
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.only(
                     top: 15, left: 10, right: 10, bottom: 15),
@@ -161,7 +161,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(height: 3),
-
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Popular Brands',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+                    ),
+                    Spacer(),
+                    FlatButton(
+                      onPressed: () {
+                        // Navigator.of(context).pushNamed(
+                        //   BrandNavigationRailScreen.routeName,
+                        //   arguments: {
+                        //     7,
+                        //   },
+                        // );
+                      },
+                      child: Text(
+                        'View all...',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 15,
+                            color: Colors.red),
+                      ),
+                    )
+                  ],
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -176,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               color: Colors.blueGrey,
                               child: Image.asset(
-                                'assets/images/empty_cart.png',
+                                'assets/images/emptycart.png',
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -219,31 +248,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               SizedBox(height: 3),
-
-              // //  Container(
-              // //     width: double.infinity,
-              // //     height: 285,
-              // //     margin: EdgeInsets.only(right: 3, left: 3),
-              // //     child: ListView.builder(
-              // //       scrollDirection: Axis.horizontal,
-              // //       itemCount: popularProduct.length,
-              // //       itemBuilder: (BuildContext context, int index) {
-              // //         if (!popularProduct[index].isPopular)
-              // //           return Container(
-              // //             width: 0,
-              // //             height: 0,
-              // //           );
-              // //         if (popularProduct[index].isPopular) {
-              // //           return ChangeNotifierProvider.value(
-              // //             value: products.popularItems[index],
-              // //             child: PopularProducts(
-
-              // //                 ),
-              // //           );
-              // //         }
-              // //       },
-              // //     ),
-              // //   ),
+              Container(
+                width: double.infinity,
+                height: 285,
+                margin: EdgeInsets.symmetric(horizontal: 3),
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 8,
+                    itemBuilder: (BuildContext ctx, int index) {
+                      return PopularProductItem();
+                    }),
+              )
             ],
           ),
         ),
