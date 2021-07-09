@@ -3,6 +3,7 @@ import 'package:e_commerce/widget/feeds_product_item.dart';
 import 'package:flutter/material.dart';
 
 class FeedsScreen extends StatelessWidget {
+  static const String routeName = '/feedsScreen';
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: FeedsGrid());

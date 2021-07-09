@@ -7,6 +7,8 @@ import 'package:list_tile_switch/list_tile_switch.dart';
 import 'package:provider/provider.dart';
 
 class UserScreen extends StatefulWidget {
+  static const String routeName = '/UserScreen';
+
   @override
   _UserScreenState createState() => _UserScreenState();
 }

@@ -1,3 +1,8 @@
+import 'package:e_commerce/screens/cart_page.dart';
+import 'package:e_commerce/screens/feeds_page.dart';
+import 'package:e_commerce/screens/home_page.dart';
+import 'package:e_commerce/screens/search_page.dart';
+import 'package:e_commerce/screens/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:e_commerce/constants/theme_data.dart';
@@ -42,6 +47,13 @@ class _MyAppState extends State<MyApp> {
         child: Consumer<DarkThemeProvider>(
           builder: (context, value, child) {
             return MaterialApp(
+              routes: {
+                HomeScreen.routeName: (context) => HomeScreen(),
+                CartScreen.routeName: (context) => CartScreen(),
+                FeedsScreen.routeName: (context) => FeedsScreen(),
+                UserScreen.routeName: (context) => UserScreen(),
+                SearchScreen.routeName: (context) => SearchScreen(),
+              },
               title: 'Bottom Navigation bar',
               theme: Styles.themeData(themeChangeProvider.darkTheme, context),
               home: BottomBarScreen(),

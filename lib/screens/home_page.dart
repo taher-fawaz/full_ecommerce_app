@@ -3,12 +3,15 @@ import 'package:backdrop/scaffold.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/constants/colors.dart';
 import 'package:e_commerce/screens/user_page.dart';
+import 'package:e_commerce/widget/backlayer.dart';
 import 'package:e_commerce/widget/category_item_widget.dart';
 import 'package:e_commerce/widget/popular_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const String routeName = '/HomeScreen';
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -98,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      backLayer: Text('hadi'),
+      backLayer: BackLayerMenu(),
       frontLayer: Scaffold(
         // backgroundColor: Colors.grey.shade300,
         body: SingleChildScrollView(

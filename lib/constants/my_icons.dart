@@ -14,4 +14,8 @@ class AppIcons {
   static const star = FontAwesomeIcons.star;
   static const starAndCrescent = FontAwesomeIcons.starAndCrescent;
   static const cartPlus = FontAwesomeIcons.cartPlus;
+  static const rss = FaIcon(FontAwesomeIcons.rss);
+
+  static const wishList = FaIcon(FontAwesomeIcons.heart);
+  static const upload = FaIcon(FontAwesomeIcons.upload);
 }
