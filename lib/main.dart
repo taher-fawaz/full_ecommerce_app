@@ -1,14 +1,18 @@
+import 'package:e_commerce/provider/products.dart';
 import 'package:e_commerce/screens/cart_page.dart';
 import 'package:e_commerce/screens/feeds_page.dart';
 import 'package:e_commerce/screens/home_page.dart';
 import 'package:e_commerce/screens/search_page.dart';
 import 'package:e_commerce/screens/user_page.dart';
+import 'package:e_commerce/screens/wishlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:e_commerce/constants/theme_data.dart';
 import 'package:e_commerce/provider/dark_theme_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'inner_screens/brands_navigation_rail.dart';
+import 'inner_screens/product_details.dart';
 import 'widget/bottom_bar.dart';
 
 void main() {
@@ -42,6 +46,9 @@ class _MyAppState extends State<MyApp> {
             create: (_) {
               return themeChangeProvider;
             },
+          ),
+          ChangeNotifierProvider(
+            create: (_) => Products(),
           )
         ],
         child: Consumer<DarkThemeProvider>(
@@ -53,6 +60,10 @@ class _MyAppState extends State<MyApp> {
                 FeedsScreen.routeName: (context) => FeedsScreen(),
                 UserScreen.routeName: (context) => UserScreen(),
                 SearchScreen.routeName: (context) => SearchScreen(),
+                WishListScreen.routeName: (context) => WishListScreen(),
+                BrandNavigationRailScreen.routeName: (context) =>
+                    BrandNavigationRailScreen(),
+                ProductDetails.routeName: (context) => ProductDetails(),
               },
               title: 'Bottom Navigation bar',
               theme: Styles.themeData(themeChangeProvider.darkTheme, context),

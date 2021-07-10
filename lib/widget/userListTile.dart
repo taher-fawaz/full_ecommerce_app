@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class UserListTile extends StatelessWidget {
-  UserListTile(this.title, this.subtitle, this.icon);
+  UserListTile({this.title, this.subtitle, this.icon});
 
-  late String title;
-  late String subtitle;
-  late IconData icon;
+  late String? title;
+  late String? subtitle;
+  late IconData? icon;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -14,8 +14,8 @@ class UserListTile extends StatelessWidget {
         onTap: () {},
         splashColor: Theme.of(context).splashColor,
         child: ListTile(
-          title: Text(title),
-          subtitle: Text(subtitle),
+          title: Text(title!),
+          subtitle: Text(subtitle!),
           leading: Icon(icon),
         ),
       ),

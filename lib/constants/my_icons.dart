@@ -7,7 +7,7 @@ class AppIcons {
   static const user = FaIcon(FontAwesomeIcons.user);
   static const search = FaIcon(FontAwesomeIcons.search);
   static const moon = FaIcon(FontAwesomeIcons.moon);
-  static const signOut = FaIcon(FontAwesomeIcons.signOutAlt);
+  static const signOut = FontAwesomeIcons.signOutAlt;
   static const cross = FontAwesomeIcons.removeFormat;
   static const minus = FontAwesomeIcons.minus;
   static const plus = FontAwesomeIcons.plus;

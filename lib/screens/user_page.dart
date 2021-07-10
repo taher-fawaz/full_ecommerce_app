@@ -1,3 +1,4 @@
+import 'package:e_commerce/screens/wishlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce/constants/colors.dart';
 import 'package:e_commerce/constants/my_icons.dart';
@@ -118,56 +119,108 @@ class _UserScreenState extends State<UserScreen> {
                 }),
               ),
               SliverToBoxAdapter(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: userTitle("User Information"),
-                  ),
-                  Divider(thickness: 1, color: Colors.grey),
-                  UserListTile("Email", "Email Sub", Icons.email),
-                  UserListTile("Phone Number", "+20", Icons.email),
-                  UserListTile("Shipping Adress", "", Icons.email),
-                  UserListTile("Joined Date", "Date", Icons.email),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: userTitle("User Settings"),
-                  ),
-                  Divider(thickness: 1, color: Colors.grey),
-                  ListTileSwitch(
-                    value: themeChange.darkTheme,
-                    leading: AppIcons.moon,
-                    onChanged: (value) {
-                      setState(() {
-                        themeChange.darkTheme = value;
-                      });
-                    },
-                    visualDensity: VisualDensity.comfortable,
-                    switchType: SwitchType.cupertino,
-                    switchActiveColor: Colors.green,
-                    title: Text('Dark Theme'),
-                  ),
-                  ListTileSwitch(
-                    value: _value,
-                    leading: AppIcons.signOut,
-                    onChanged: (value) {
-                      setState(() {
-                        _value = value;
-                      });
-                    },
-                    visualDensity: VisualDensity.comfortable,
-                    switchType: SwitchType.cupertino,
-                    switchActiveColor: Colors.green,
-                    title: Text('Sign Out'),
-                  ),
-                ],
-              ))
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: userTitle('User Bag')),
+                    Divider(
+                      thickness: 1,
+                      color: Colors.grey,
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Theme.of(context).splashColor,
+                        child: ListTile(
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(WishListScreen.routeName),
+                          title: Text('Wishlist'),
+                          trailing: Icon(Icons.chevron_right_rounded),
+                          leading: AppIcons.wishList,
+                        ),
+                      ),
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Theme.of(context).splashColor,
+                        child: ListTile(
+                          onTap: () {},
+                          title: Text('Cart'),
+                          trailing: Icon(Icons.chevron_right_rounded),
+                          leading: AppIcons.cart,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: userTitle('User Information')),
+                    Divider(
+                      thickness: 1,
+                      color: Colors.grey,
+                    ),
+                    UserListTile(
+                        title: "Email",
+                        subtitle: "Email Sub",
+                        icon: Icons.email),
+                    UserListTile(
+                        title: "Phone Number",
+                        subtitle: "+20",
+                        icon: Icons.email),
+                    UserListTile(
+                        title: "Shipping Adress",
+                        subtitle: "",
+                        icon: Icons.email),
+                    UserListTile(
+                        title: "Joined Date",
+                        subtitle: "Date",
+                        icon: Icons.email),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: userTitle('User settings'),
+                    ),
+                    Divider(
+                      thickness: 1,
+                      color: Colors.grey,
+                    ),
+                    ListTileSwitch(
+                      value: themeChange.darkTheme,
+                      leading: AppIcons.moon,
+                      onChanged: (value) {
+                        setState(() {
+                          themeChange.darkTheme = value;
+                        });
+                      },
+                      visualDensity: VisualDensity.comfortable,
+                      switchType: SwitchType.cupertino,
+                      switchActiveColor: Colors.indigo,
+                      title: Text('Dark theme'),
+                    ),
+                    userListTile('Logout', AppIcons.signOut, context),
+                  ],
+                ),
+              )
             ],
           ),
           _buildFab()
         ],
+      ),
+    );
+  }
+
+  Widget userListTile(String title, IconData icon, BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        splashColor: Theme.of(context).splashColor,
+        child: ListTile(
+          onTap: () {},
+          title: Text(title),
+          leading: Icon(icon),
+        ),
       ),
     );
   }

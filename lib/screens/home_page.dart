@@ -2,6 +2,7 @@ import 'package:backdrop/backdrop.dart';
 import 'package:backdrop/scaffold.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/constants/colors.dart';
+import 'package:e_commerce/inner_screens/brands_navigation_rail.dart';
 import 'package:e_commerce/screens/user_page.dart';
 import 'package:e_commerce/widget/backlayer.dart';
 import 'package:e_commerce/widget/category_item_widget.dart';
@@ -176,12 +177,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Spacer(),
                     FlatButton(
                       onPressed: () {
-                        // Navigator.of(context).pushNamed(
-                        //   BrandNavigationRailScreen.routeName,
-                        //   arguments: {
-                        //     7,
-                        //   },
-                        // );
+                        Navigator.of(context).pushNamed(
+                          BrandNavigationRailScreen.routeName,
+                          arguments: {
+                            7,
+                          },
+                        );
                       },
                       child: Text(
                         'View all...',

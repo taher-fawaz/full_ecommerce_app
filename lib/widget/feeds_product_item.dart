@@ -1,115 +1,128 @@
 import 'package:badges/badges.dart';
+import 'package:e_commerce/constants/constants_values.dart';
+import 'package:e_commerce/inner_screens/product_details.dart';
+import 'package:e_commerce/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class FeedsProductItem extends StatelessWidget {
+class FeedsProductItem extends StatefulWidget {
+  @override
+  _FeedsProductItemState createState() => _FeedsProductItemState();
+}
+
+class _FeedsProductItemState extends State<FeedsProductItem> {
   late Size size;
+
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
-    return Container(
-      width: 250,
-      height: 320,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).backgroundColor,
-      ),
-      child: Column(
-        children: [
-          Stack(
+    final productsAttributes = Provider.of<Product>(context);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () => Navigator.pushNamed(context, ProductDetails.routeName),
+        child: Container(
+          width: feedsItemWidth,
+          height: feedsItemHeight,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              color: Theme.of(context).backgroundColor),
+          child: Column(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(2),
-                child: Container(
-                  width: double.infinity,
-                  constraints: BoxConstraints(
-                      minHeight: 100,
-                      maxHeight: MediaQuery.of(context).size.height * 0.3),
-                  child: Image.network(
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PdHtXka2-bDDww6Nuect3Mt9IwpE4v4HNw&usqp=CAU',
-                    fit: BoxFit.fitWidth,
+              Column(
+                children: [
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(2),
+                        child: Container(
+                          width: double.infinity,
+                          constraints: BoxConstraints(
+                              minHeight: 100,
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.3),
+                          child: Image.network(
+                            productsAttributes.imageUrl!,
+                            //   fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        // bottom: 0,
+                        // right: 5,
+                        // top: 5,
+                        child: Badge(
+                          alignment: Alignment.center,
+                          toAnimate: true,
+                          shape: BadgeShape.square,
+                          badgeColor: Colors.pink,
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(8)),
+                          badgeContent: Text('New',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                ],
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(2),
-                child: Container(
-                  width: double.infinity,
-                  constraints: BoxConstraints(
-                      minHeight: 100,
-                      maxHeight: MediaQuery.of(context).size.height * 0.3),
-                  child: Image.network(
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PdHtXka2-bDDww6Nuect3Mt9IwpE4v4HNw&usqp=CAU',
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
-              Badge(
-                toAnimate: true,
-                shape: BadgeShape.square,
-                badgeColor: Colors.pink,
-                borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(10)),
-                badgeContent:
-                    Text('New', style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 5),
-            margin: EdgeInsets.only(left: 5, bottom: 2, right: 3),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  'Description',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    '\$ 158.99',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w900),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Container(
+                padding: EdgeInsets.only(left: 5),
+                margin: EdgeInsets.only(left: 5, bottom: 2, right: 3),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 4,
+                    ),
                     Text(
-                      'Quantity: 12',
+                      productsAttributes.description!,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                       style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
+                          fontSize: 15,
+                          color: Colors.black,
                           fontWeight: FontWeight.w600),
                     ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                          onTap: () {},
-                          borderRadius: BorderRadius.circular(18.0),
-                          child: Icon(
-                            Icons.more_horiz,
-                            color: Colors.grey,
-                          )),
-                    )
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        '\$ ${productsAttributes.price!}',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${productsAttributes.quantity!}',
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                              onTap: () {},
+                              borderRadius: BorderRadius.circular(18.0),
+                              child: Icon(
+                                Icons.more_horiz,
+                                color: Colors.grey,
+                              )),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          )
-        ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
