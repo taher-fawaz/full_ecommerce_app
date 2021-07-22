@@ -1,3 +1,4 @@
+import 'package:e_commerce/inner_screens/categories_feeds.dart';
 import 'package:e_commerce/provider/products.dart';
 import 'package:e_commerce/screens/cart_page.dart';
 import 'package:e_commerce/screens/feeds_page.dart';
@@ -13,6 +14,8 @@ import 'package:provider/provider.dart';
 
 import 'inner_screens/brands_navigation_rail.dart';
 import 'inner_screens/product_details.dart';
+import 'provider/cart_provider.dart';
+import 'provider/favs_provider.dart';
 import 'widget/bottom_bar.dart';
 
 void main() {
@@ -49,11 +52,18 @@ class _MyAppState extends State<MyApp> {
           ),
           ChangeNotifierProvider(
             create: (_) => Products(),
-          )
+          ),
+          ChangeNotifierProvider(
+            create: (_) => CartProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => FavsProvider(),
+          ),
         ],
         child: Consumer<DarkThemeProvider>(
           builder: (context, value, child) {
             return MaterialApp(
+              debugShowCheckedModeBanner: false,
               routes: {
                 HomeScreen.routeName: (context) => HomeScreen(),
                 CartScreen.routeName: (context) => CartScreen(),
@@ -64,6 +74,8 @@ class _MyAppState extends State<MyApp> {
                 BrandNavigationRailScreen.routeName: (context) =>
                     BrandNavigationRailScreen(),
                 ProductDetails.routeName: (context) => ProductDetails(),
+                CategoriesFeedsScreen.routeName: (context) =>
+                    CategoriesFeedsScreen(),
               },
               title: 'Bottom Navigation bar',
               theme: Styles.themeData(themeChangeProvider.darkTheme, context),

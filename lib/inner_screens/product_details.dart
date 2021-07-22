@@ -1,8 +1,12 @@
 import 'dart:ui';
 
+import 'package:badges/badges.dart';
 import 'package:e_commerce/constants/colors.dart';
 import 'package:e_commerce/constants/my_icons.dart';
+import 'package:e_commerce/provider/cart_provider.dart';
 import 'package:e_commerce/provider/dark_theme_provider.dart';
+import 'package:e_commerce/provider/favs_provider.dart';
+import 'package:e_commerce/provider/products.dart';
 import 'package:e_commerce/screens/cart_page.dart';
 import 'package:e_commerce/screens/wishlist_page.dart';
 import 'package:e_commerce/widget/feeds_product_item.dart';
@@ -22,6 +26,14 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     final themeState = Provider.of<DarkThemeProvider>(context);
+    final productsData = Provider.of<Products>(context, listen: false);
+    final productId = ModalRoute.of(context)!.settings.arguments as String;
+    final cartProvider = Provider.of<CartProvider>(context);
+
+    final favsProvider = Provider.of<FavsProvider>(context);
+    print('productId $productId');
+    final prodAttr = productsData.findById(productId);
+    final productsList = productsData.products;
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -30,7 +42,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             height: MediaQuery.of(context).size.height * 0.45,
             width: double.infinity,
             child: Image.network(
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PdHtXka2-bDDww6Nuect3Mt9IwpE4v4HNw&usqp=CAU',
+              prodAttr.imageUrl!,
             ),
           ),
           SingleChildScrollView(
@@ -93,7 +105,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             Container(
                               width: MediaQuery.of(context).size.width * 0.9,
                               child: Text(
-                                'title',
+                                prodAttr.title!,
                                 maxLines: 2,
                                 style: TextStyle(
                                   // color: Theme.of(context).textSelectionColor,
@@ -106,7 +118,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               height: 8,
                             ),
                             Text(
-                              'US \$ 15',
+                              'US \$ ${prodAttr.price}',
                               style: TextStyle(
                                   color: themeState.darkTheme
                                       ? Theme.of(context).disabledColor
@@ -131,7 +143,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
-                          'Description',
+                          prodAttr.description!,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 21.0,
@@ -150,10 +162,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                           height: 1,
                         ),
                       ),
-                      _details(themeState.darkTheme, 'Brand: ', 'BrandName'),
-                      _details(themeState.darkTheme, 'Quantity: ', '12 Left'),
-                      _details(themeState.darkTheme, 'Category: ', 'Cat Name'),
-                      _details(themeState.darkTheme, 'Popularity: ', 'Popular'),
+                      _details(
+                          themeState.darkTheme, 'Brand: ', prodAttr.brand!),
+                      _details(themeState.darkTheme, 'Quantity: ',
+                          '${prodAttr.quantity}'),
+                      _details(themeState.darkTheme, 'Category: ',
+                          prodAttr.productCategoryName!),
+                      _details(themeState.darkTheme, 'Popularity: ',
+                          prodAttr.isPopular! ? 'Popular' : 'Barely known'),
                       SizedBox(
                         height: 15,
                       ),
@@ -221,12 +237,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Container(
                   margin: EdgeInsets.only(bottom: 30),
                   width: double.infinity,
-                  height: 300,
+                  height: 340,
                   child: ListView.builder(
                     itemCount: 7,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext ctx, int index) {
-                      return FeedsProductItem();
+                      return ChangeNotifierProvider.value(
+                          value: productsList[index],
+                          child: FeedsProductItem());
                     },
                   ),
                 ),
@@ -247,17 +265,42 @@ class _ProductDetailsState extends State<ProductDetails> {
                       TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal),
                 ),
                 actions: <Widget>[
-                  IconButton(
-                    icon: AppIcons.wishList,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(WishListScreen.routeName);
-                    },
+                  Consumer<FavsProvider>(
+                    builder: (_, favs, ch) => Badge(
+                      badgeColor: ColorsConsts.cartBadgeColor,
+                      animationType: BadgeAnimationType.slide,
+                      toAnimate: true,
+                      position: BadgePosition.topEnd(top: 5, end: 7),
+                      badgeContent: Text(
+                        favs.getFavsItems.length.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      child: IconButton(
+                        icon: AppIcons.wishList,
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(WishListScreen.routeName);
+                        },
+                      ),
+                    ),
                   ),
-                  IconButton(
-                    icon: AppIcons.cart,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(CartScreen.routeName);
-                    },
+                  Consumer<CartProvider>(
+                    builder: (_, cart, ch) => Badge(
+                      badgeColor: ColorsConsts.cartBadgeColor,
+                      animationType: BadgeAnimationType.slide,
+                      toAnimate: true,
+                      position: BadgePosition.topEnd(top: 5, end: 7),
+                      badgeContent: Text(
+                        cart.getCartItems.length.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      child: IconButton(
+                        icon: AppIcons.cart,
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(CartScreen.routeName);
+                        },
+                      ),
+                    ),
                   ),
                 ]),
           ),
@@ -272,9 +315,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       shape: RoundedRectangleBorder(side: BorderSide.none),
                       color: Colors.redAccent.shade400,
-                      onPressed: () {},
+                      onPressed:
+                          cartProvider.getCartItems.containsKey(productId)
+                              ? () {}
+                              : () {
+                                  cartProvider.addProductToCart(
+                                      productId,
+                                      prodAttr.price!,
+                                      prodAttr.title!,
+                                      prodAttr.imageUrl!);
+                                },
                       child: Text(
-                        'Add to Cart'.toUpperCase(),
+                        cartProvider.getCartItems.containsKey(productId)
+                            ? 'In cart'
+                            : 'Add to Cart'.toUpperCase(),
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
@@ -319,9 +373,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                     height: 50,
                     child: InkWell(
                       splashColor: ColorsConsts.favColor,
-                      onTap: () {},
+                      onTap: () {
+                        favsProvider.addAndRemoveFromFav(
+                          productId,
+                          prodAttr.price!,
+                          prodAttr.title!,
+                          prodAttr.imageUrl!,
+                        );
+                      },
                       child: Center(
-                        child: AppIcons.wishList,
+                        child: favsProvider.getFavsItems.containsKey(productId)
+                            ? Icon(
+                                Icons.favorite,
+                                color: favsProvider.getFavsItems
+                                        .containsKey(productId)
+                                    ? Colors.red
+                                    : ColorsConsts.white,
+                              )
+                            : AppIcons.wishList,
                       ),
                     ),
                   ),

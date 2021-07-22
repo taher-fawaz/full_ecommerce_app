@@ -1,3 +1,4 @@
+import 'package:e_commerce/screens/cart_page.dart';
 import 'package:e_commerce/screens/wishlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce/constants/colors.dart';
@@ -148,7 +149,8 @@ class _UserScreenState extends State<UserScreen> {
                       child: InkWell(
                         splashColor: Theme.of(context).splashColor,
                         child: ListTile(
-                          onTap: () {},
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(CartScreen.routeName),
                           title: Text('Cart'),
                           trailing: Icon(Icons.chevron_right_rounded),
                           leading: AppIcons.cart,

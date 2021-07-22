@@ -3,12 +3,15 @@ import 'package:backdrop/scaffold.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/constants/colors.dart';
 import 'package:e_commerce/inner_screens/brands_navigation_rail.dart';
+import 'package:e_commerce/provider/products.dart';
+import 'package:e_commerce/screens/feeds_page.dart';
 import 'package:e_commerce/screens/user_page.dart';
 import 'package:e_commerce/widget/backlayer.dart';
 import 'package:e_commerce/widget/category_item_widget.dart';
 import 'package:e_commerce/widget/popular_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/HomeScreen';
@@ -45,6 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final productsData = Provider.of<Products>(context);
+    final popularItems = productsData.getPopularProducts;
     return BackdropScaffold(
       headerHeight: MediaQuery.of(context).size.height * 0.15,
       appBar: BackdropAppBar(
@@ -203,23 +209,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: MediaQuery.of(context).size.width * 0.95,
                     padding: EdgeInsets.only(left: 8.0, right: 8.0),
                     child: Swiper(
-                        itemBuilder: (BuildContext context, int index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Container(
-                              color: Colors.blueGrey,
-                              child: Image.asset(
-                                'assets/images/emptycart.png',
-                                fit: BoxFit.fill,
-                              ),
+                      autoplay: true,
+                      itemCount: 7,
+                      viewportFraction: 0.8,
+                      scale: 0.9,
+                      onTap: (index) {
+                        Navigator.of(context).pushNamed(
+                            BrandNavigationRailScreen.routeName,
+                            arguments: [index]);
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Container(
+                            color: Colors.blueGrey,
+                            child: Image.asset(
+                              'assets/images/emptycart.png',
+                              fit: BoxFit.fill,
                             ),
-                          );
-                        },
-                        autoplay: true,
-                        itemCount: 7,
-                        viewportFraction: 0.8,
-                        scale: 0.9,
-                        onTap: (index) {}),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -240,7 +251,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     //  textColor: Colors.white,
                     padding: const EdgeInsets.only(left: 20, right: 17),
                     splashColor: Colors.grey,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(FeedsScreen.routeName,
+                          arguments: 'popular');
+                    },
                     child: Text(
                       "View all >>",
                       style: TextStyle(
@@ -258,9 +272,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 3),
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 8,
+                    itemCount: popularItems.length,
                     itemBuilder: (BuildContext ctx, int index) {
-                      return PopularProductItem();
+                      return ChangeNotifierProvider.value(
+                        value: popularItems[index],
+                        child: PopularProducts(
+                            // imageUrl: popularItems[index].imageUrl,
+                            // title: popularItems[index].title,
+                            // description: popularItems[index].description,
+                            // price: popularItems[index].price,
+                            ),
+                      );
                     }),
               )
             ],

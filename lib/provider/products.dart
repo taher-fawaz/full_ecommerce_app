@@ -126,8 +126,28 @@ class Products with ChangeNotifier {
     return [..._products];
   }
 
-  // List<Product> findByCategory (String categoryName){
-  //   List _categoryList = _products.where((element) => element.productCategoryName.toLowerCase().contains(categoryName.toLowerCase())).toList();
-  //   return _categoryList;
-  // }
+  Product findById(String productId) {
+    return _products.firstWhere((element) => element.id == productId);
+  }
+
+  List<Product> get getPopularProducts {
+    return _products.where((element) => element.isPopular!).toList();
+  }
+
+  List<Product> findByCategory(String categoryName) {
+    List<Product> _categoryList = _products
+        .where((element) => element.productCategoryName!
+            .toLowerCase()
+            .contains(categoryName.toLowerCase()))
+        .toList();
+    return _categoryList;
+  }
+
+  List<Product> findByBrand(String brandName) {
+    List<Product> _brandList = _products
+        .where((element) =>
+            element.brand!.toLowerCase().contains(brandName.toLowerCase()))
+        .toList();
+    return _brandList;
+  }
 }

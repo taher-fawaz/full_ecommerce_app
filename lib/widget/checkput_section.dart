@@ -2,6 +2,8 @@ import 'package:e_commerce/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class CheckOutSection extends StatelessWidget {
+  double totalAmount = 0.0;
+  CheckOutSection(this.totalAmount);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,7 +55,7 @@ class CheckOutSection extends StatelessWidget {
                   color: Theme.of(context).textSelectionTheme.selectionColor),
             ),
             Text(
-              "US \$ 179.0",
+              "US \$ ${totalAmount.toStringAsFixed(2)}",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 18,

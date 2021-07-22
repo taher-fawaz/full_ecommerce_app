@@ -1,3 +1,4 @@
+import 'package:e_commerce/inner_screens/categories_feeds.dart';
 import 'package:flutter/material.dart';
 
 class CategoryItemWidget extends StatefulWidget {
@@ -43,17 +44,22 @@ class _CategoryItemWidgetState extends State<CategoryItemWidget> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-                image:
-                    AssetImage(categories[widget.index]['categoryImagesPath']),
-                fit: BoxFit.cover),
+        InkWell(
+          onTap: () => Navigator.of(context).pushNamed(
+              CategoriesFeedsScreen.routeName,
+              arguments: '${categories[widget.index]['categoryName']}'),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                  image: AssetImage(
+                      categories[widget.index]['categoryImagesPath']),
+                  fit: BoxFit.cover),
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            width: 150,
+            height: 150,
           ),
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          width: 150,
-          height: 150,
         ),
         Positioned(
           bottom: 0,

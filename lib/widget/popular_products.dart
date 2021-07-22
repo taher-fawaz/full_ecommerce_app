@@ -1,9 +1,25 @@
 import 'package:e_commerce/constants/my_icons.dart';
+import 'package:e_commerce/inner_screens/product_details.dart';
+import 'package:e_commerce/models/product.dart';
+import 'package:e_commerce/provider/cart_provider.dart';
+import 'package:e_commerce/provider/favs_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class PopularProductItem extends StatelessWidget {
+class PopularProducts extends StatelessWidget {
+  // final String imageUrl;
+  // final String title;
+  // final String description;
+  // final double price;
+
+  // const PopularProducts(
+  //     {Key key, this.imageUrl, this.title, this.description, this.price})
+  //     : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final productsAttributes = Provider.of<Product>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    final favsProvider = Provider.of<FavsProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -26,7 +42,8 @@ class PopularProductItem extends StatelessWidget {
               ),
               bottomRight: Radius.circular(10.0),
             ),
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, ProductDetails.routeName,
+                arguments: productsAttributes.id),
             child: Column(
               children: [
                 Stack(
@@ -35,21 +52,23 @@ class PopularProductItem extends StatelessWidget {
                       height: 170,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PdHtXka2-bDDww6Nuect3Mt9IwpE4v4HNw&usqp=CAU'),
-                              fit: BoxFit.fill)),
+                              image: NetworkImage(productsAttributes.imageUrl!),
+                              fit: BoxFit.contain)),
                     ),
                     Positioned(
-                      right: 12,
-                      top: 10,
+                      right: 10,
+                      top: 8,
                       child: Icon(
                         AppIcons.star,
-                        color: Colors.grey.shade800,
+                        color: favsProvider.getFavsItems
+                                .containsKey(productsAttributes.id)
+                            ? Colors.red
+                            : Colors.grey.shade800,
                       ),
                     ),
                     Positioned(
                       right: 10,
-                      top: 7,
+                      top: 8,
                       child: Icon(
                         AppIcons.starAndCrescent,
                         color: Colors.white,
@@ -62,7 +81,7 @@ class PopularProductItem extends StatelessWidget {
                         padding: EdgeInsets.all(10.0),
                         color: Theme.of(context).backgroundColor,
                         child: Text(
-                          '\$ 12.2',
+                          '\$ ${productsAttributes.price}',
                           style: TextStyle(
                             color: Theme.of(context).textSelectionColor,
                           ),
@@ -77,7 +96,7 @@ class PopularProductItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Title',
+                        productsAttributes.title!,
                         maxLines: 1,
                         style: TextStyle(
                             fontSize: 18.0, fontWeight: FontWeight.bold),
@@ -85,28 +104,48 @@ class PopularProductItem extends StatelessWidget {
                       Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Description',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey[800],
+                          Expanded(
+                            flex: 5,
+                            child: Text(
+                              productsAttributes.description!,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[800],
+                              ),
                             ),
                           ),
                           Spacer(),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {},
-                              borderRadius: BorderRadius.circular(30.0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  AppIcons.cartPlus,
-                                  size: 25,
-                                  color: Colors.black,
+                          Expanded(
+                            flex: 1,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: cartProvider.getCartItems.containsKey(
+                                  productsAttributes.id,
+                                )
+                                    ? () {}
+                                    : () {
+                                        cartProvider.addProductToCart(
+                                            productsAttributes.id!,
+                                            productsAttributes.price!,
+                                            productsAttributes.title!,
+                                            productsAttributes.imageUrl!);
+                                      },
+                                borderRadius: BorderRadius.circular(30.0),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    cartProvider.getCartItems.containsKey(
+                                      productsAttributes.id,
+                                    )
+                                        ? AppIcons.checkDouble
+                                        : AppIcons.cartPlus,
+                                    size: 25,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),

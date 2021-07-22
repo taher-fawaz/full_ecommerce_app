@@ -19,7 +19,8 @@ class _FeedsProductItemState extends State<FeedsProductItem> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, ProductDetails.routeName),
+        onTap: () => Navigator.pushNamed(context, ProductDetails.routeName,
+            arguments: productsAttributes.id),
         child: Container(
           width: feedsItemWidth,
           height: feedsItemHeight,
