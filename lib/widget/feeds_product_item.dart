@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:e_commerce/constants/constants_values.dart';
 import 'package:e_commerce/inner_screens/product_details.dart';
 import 'package:e_commerce/models/product.dart';
+import 'package:e_commerce/widget/feeds.dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -109,7 +110,13 @@ class _FeedsProductItemState extends State<FeedsProductItem> {
                         Material(
                           color: Colors.transparent,
                           child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => FeedDialog(
+                                      productId: productsAttributes.id),
+                                );
+                              },
                               borderRadius: BorderRadius.circular(18.0),
                               child: Icon(
                                 Icons.more_horiz,
