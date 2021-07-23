@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:e_commerce/constants/colors.dart';
+import 'package:e_commerce/Controller/constants/colors.dart';
 
 class SubTitleWidget extends StatelessWidget {
   late bool darkTheme;

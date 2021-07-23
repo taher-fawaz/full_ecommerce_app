@@ -1,22 +1,22 @@
-import 'package:e_commerce/inner_screens/categories_feeds.dart';
-import 'package:e_commerce/provider/products.dart';
-import 'package:e_commerce/screens/cart_page.dart';
-import 'package:e_commerce/screens/feeds_page.dart';
-import 'package:e_commerce/screens/home_page.dart';
-import 'package:e_commerce/screens/search_page.dart';
-import 'package:e_commerce/screens/user_page.dart';
-import 'package:e_commerce/screens/wishlist_page.dart';
+import 'package:e_commerce/View/Feeds/components/categories_feeds.dart';
+import 'package:e_commerce/View/Cart/cart_page.dart';
+import 'package:e_commerce/View/Feeds/feeds_page.dart';
+import 'package:e_commerce/View/Home/home_page.dart';
+import 'package:e_commerce/View/Search/search_page.dart';
+import 'package:e_commerce/View/User/user_page.dart';
+import 'package:e_commerce/View/Wishlist/wishlist_page.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:e_commerce/constants/theme_data.dart';
-import 'package:e_commerce/provider/dark_theme_provider.dart';
+import 'package:e_commerce/Controller/constants/theme_data.dart';
 import 'package:provider/provider.dart';
 
-import 'inner_screens/brands_navigation_rail.dart';
-import 'inner_screens/product_details.dart';
-import 'provider/cart_provider.dart';
-import 'provider/favs_provider.dart';
-import 'widget/bottom_bar.dart';
+import 'Controller/provider/cart_provider.dart';
+import 'Controller/provider/dark_theme_provider.dart';
+import 'Controller/provider/favs_provider.dart';
+import 'Controller/provider/products.dart';
+import 'View/Brands/brands_navigation_rail.dart';
+import 'View/prooduct/product_details.dart';
+
+import 'View/BottomBar/bottom_bar.dart';
 
 void main() {
   runApp(MyApp());

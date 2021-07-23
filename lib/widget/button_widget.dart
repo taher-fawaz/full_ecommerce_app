@@ -18,7 +18,7 @@ class ButtonWidget extends StatelessWidget {
         title,
         textAlign: TextAlign.center,
         style: TextStyle(
-            color: Theme.of(context).textSelectionColor,
+            color: TextSelectionTheme.of(context).selectionColor,
             fontSize: 26,
             fontWeight: FontWeight.w600),
       ),
