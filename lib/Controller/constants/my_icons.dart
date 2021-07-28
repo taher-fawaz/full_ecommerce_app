@@ -9,12 +9,16 @@ class AppIcons {
   static FaIcon cart =
       FaIcon(FontAwesomeIcons.shoppingBag, color: ColorsConsts.cartColor);
   static const user = FaIcon(FontAwesomeIcons.user);
+  static const upload = FontAwesomeIcons.upload;
+
   static const search = FaIcon(FontAwesomeIcons.search);
   static const moon = FaIcon(FontAwesomeIcons.moon);
   static const signOut = FontAwesomeIcons.signOutAlt;
   static const cross = FontAwesomeIcons.removeFormat;
   static const minus = FontAwesomeIcons.minus;
   static const plus = FontAwesomeIcons.plus;
+  static const userPlus = FontAwesomeIcons.userPlus;
+
   static const star = FontAwesomeIcons.star;
   static const starAndCrescent = FontAwesomeIcons.starAndCrescent;
   static const cartPlus = FontAwesomeIcons.cartPlus;
@@ -27,5 +31,4 @@ class AppIcons {
     FontAwesomeIcons.heart,
     color: Colors.white,
   );
-  static const upload = FaIcon(FontAwesomeIcons.upload);
 }

@@ -2,8 +2,10 @@ import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
 import 'package:e_commerce/View/Cart/cart_page.dart';
 import 'package:e_commerce/View/Feeds/feeds_page.dart';
+import 'package:e_commerce/View/Home/components/upload_product_form.dart';
 import 'package:e_commerce/View/User/user_page.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BackLayerMenu extends StatelessWidget {
   @override
@@ -125,7 +127,7 @@ class BackLayerMenu extends StatelessWidget {
                 }, 'Wishlist', 2),
                 const SizedBox(height: 10.0),
                 content(context, () {
-                  navigateTo(context, UserScreen.routeName);
+                  navigateTo(context, UploadProductForm.routeName);
                 }, 'Upload a new product', 3),
               ],
             ),
@@ -139,7 +141,7 @@ class BackLayerMenu extends StatelessWidget {
     AppIcons.rss,
     AppIcons.cart,
     AppIcons.wishList,
-    AppIcons.upload
+    FaIcon(FontAwesomeIcons.upload),
   ];
   void navigateTo(BuildContext ctx, String routeName) {
     Navigator.of(ctx).pushNamed(

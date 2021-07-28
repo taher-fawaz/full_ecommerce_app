@@ -39,6 +39,9 @@ dependencies:
   carousel_slider: ^4.0.0
   flutter_swiper_null_safety: ^1.0.2
   lottie: ^1.0.0
+  cached_network_image: ^3.1.0
+  wave: ^0.2.0
+  image_picker: ^0.8.2
 
 
 dev_dependencies:
