@@ -36,43 +36,34 @@ class _UserScreenState extends State<UserScreen> {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      setState(() {});
+      // setState(() {});
     });
-    getData();
+    // getData();
   }
 
-  void getData() async {
-    final userId = _auth.currentUser!.uid;
-    final User? user = _auth.currentUser;
+  // Future<void> getData() async {
+  //   final userId = _auth.currentUser!.uid;
+  //   final User? user = _auth.currentUser;
 
-    // _uid = user!.uid;
-
-    print('user.displayName ${_auth.currentUser!.uid}');
-    print('user.photoURL ${user!.photoURL}');
-    final DocumentSnapshot? userDoc = user.isAnonymous
-        ? null
-        : await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId)
-            .get();
-    if (userDoc == null) {
-      return;
-    } else {
-      setState(() {
-        _name = userDoc.get('name');
-        _email = user.email;
-        _joinedAt = userDoc.get('joinedAt');
-        _phoneNumber = userDoc.get('phoneNumber');
-        _userImageUrl = userDoc.get('imageUrl');
-        print('user.photoURL ${_name}');
-        print('user.photoURL ${_email}');
-        print('user.photoURL ${_joinedAt}');
-        print('user.photoURL ${_phoneNumber}');
-        print('user.photoURL ${_userImageUrl}');
-      });
-    }
-    // print("name $_name");
-  }
+  //   final DocumentSnapshot? userDoc = user!.isAnonymous
+  //       ? null
+  //       : await FirebaseFirestore.instance
+  //           .collection('users')
+  //           .doc(userId)
+  //           .get();
+  //   if (userDoc == null) {
+  //     return;
+  //   } else {
+  //     setState(() {
+  //       _name = userDoc.get('name');
+  //       _email = user.email;
+  //       _joinedAt = userDoc.get('joinedAt');
+  //       _phoneNumber = userDoc.get('phoneNumber');
+  //       _userImageUrl = userDoc.get('imageUrl');
+  //     });
+  //   }
+  //   // print("name $_name");
+  // }
 
   @override
   void dispose() {
@@ -82,237 +73,277 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userId = _auth.currentUser!.uid;
+
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    return Scaffold(
-      body: Stack(
-        children: [
-          CustomScrollView(
-            controller: _scrollController,
-            slivers: <Widget>[
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                elevation: 4,
-                expandedHeight: 200,
-                pinned: true,
-                flexibleSpace: LayoutBuilder(builder:
-                    (BuildContext context, BoxConstraints constraints) {
-                  top = constraints.biggest.height;
-                  return Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [
-                            ColorsConsts.starterColor,
-                            ColorsConsts.endColor,
-                          ],
-                          begin: const FractionalOffset(0.0, 0.0),
-                          end: const FractionalOffset(1.0, 0.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp),
-                    ),
-                    child: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
-                      centerTitle: true,
-                      title: Row(
-                        //  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          AnimatedOpacity(
-                            duration: Duration(milliseconds: 300),
-                            opacity: top <= 110.0 ? 1.0 : 0,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 12,
-                                ),
-                                Container(
-                                  height: kToolbarHeight / 1.8,
-                                  width: kToolbarHeight / 1.8,
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        blurRadius: 1.0,
-                                      ),
-                                    ],
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(
-                                          'https://cdn1.vectorstock.com/i/thumb-large/62/60/default-avatar-photo-placeholder-profile-image-vector-21666260.jpg'),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 12,
-                                ),
-                                Text(
-                                  // 'top.toString()',
-                                  'Guest',
-                                  style: TextStyle(
-                                      fontSize: 20.0, color: Colors.white),
-                                ),
-                              ],
+    return FutureBuilder<DocumentSnapshot>(
+        future:
+            // getData(),
+            FirebaseFirestore.instance.collection('users').doc(userId).get(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return Text("Document does not exist");
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            print("Full Name: ${data['name']}");
+            // return Text("Full Name: ${data['full_name']} ${data['last_name']}");
+            return Scaffold(
+              body: Stack(
+                children: [
+                  CustomScrollView(
+                    controller: _scrollController,
+                    slivers: <Widget>[
+                      SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        elevation: 4,
+                        expandedHeight: 200,
+                        pinned: true,
+                        flexibleSpace: LayoutBuilder(builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          top = constraints.biggest.height;
+                          return Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    ColorsConsts.starterColor,
+                                    ColorsConsts.endColor,
+                                  ],
+                                  begin: const FractionalOffset(0.0, 0.0),
+                                  end: const FractionalOffset(1.0, 0.0),
+                                  stops: [0.0, 1.0],
+                                  tileMode: TileMode.clamp),
                             ),
-                          ),
-                        ],
-                      ),
-                      background: Image(
-                        image: NetworkImage(
-                            'https://cdn1.vectorstock.com/i/thumb-large/62/60/default-avatar-photo-placeholder-profile-image-vector-21666260.jpg'),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  );
-                }),
-              ),
-              SliverToBoxAdapter(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: userTitle('User Bag')),
-                    Divider(
-                      thickness: 1,
-                      color: Colors.grey,
-                    ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        splashColor: Theme.of(context).splashColor,
-                        child: ListTile(
-                          onTap: () => Navigator.of(context)
-                              .pushNamed(WishListScreen.routeName),
-                          title: Text('Wishlist'),
-                          trailing: Icon(Icons.chevron_right_rounded),
-                          leading: AppIcons.wishList,
-                        ),
-                      ),
-                    ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        splashColor: Theme.of(context).splashColor,
-                        child: ListTile(
-                          onTap: () => Navigator.of(context)
-                              .pushNamed(CartScreen.routeName),
-                          title: Text('Cart'),
-                          trailing: Icon(Icons.chevron_right_rounded),
-                          leading: AppIcons.cart,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: userTitle('User Information')),
-                    Divider(
-                      thickness: 1,
-                      color: Colors.grey,
-                    ),
-                    UserListTile(
-                        title: "Email",
-                        subtitle: "Email Sub",
-                        icon: Icons.email),
-                    UserListTile(
-                        title: "Phone Number",
-                        subtitle: "+20",
-                        icon: Icons.email),
-                    UserListTile(
-                        title: "Shipping Adress",
-                        subtitle: "",
-                        icon: Icons.email),
-                    UserListTile(
-                        title: "Joined Date",
-                        subtitle: "Date",
-                        icon: Icons.email),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: userTitle('User settings'),
-                    ),
-                    Divider(
-                      thickness: 1,
-                      color: Colors.grey,
-                    ),
-                    ListTileSwitch(
-                      value: themeChange.darkTheme,
-                      leading: AppIcons.moon,
-                      onChanged: (value) {
-                        setState(() {
-                          themeChange.darkTheme = value;
-                        });
-                      },
-                      visualDensity: VisualDensity.comfortable,
-                      switchType: SwitchType.cupertino,
-                      switchActiveColor: Colors.indigo,
-                      title: Text('Dark theme'),
-                    ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        splashColor: Theme.of(context).splashColor,
-                        child: ListTile(
-                          onTap: () async {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext ctx) {
-                                  return AlertDialog(
-                                    title: Row(
+                            child: FlexibleSpaceBar(
+                              collapseMode: CollapseMode.parallax,
+                              centerTitle: true,
+                              title: Row(
+                                //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  AnimatedOpacity(
+                                    duration: Duration(milliseconds: 300),
+                                    opacity: top <= 110.0 ? 1.0 : 0,
+                                    child: Row(
                                       children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 6.0),
-                                          child: Image.network(
-                                            'https://image.flaticon.com/icons/png/128/1828/1828304.png',
-                                            height: 20,
-                                            width: 20,
+                                        SizedBox(
+                                          width: 12,
+                                        ),
+                                        Container(
+                                          height: kToolbarHeight / 1.8,
+                                          width: kToolbarHeight / 1.8,
+                                          decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.white,
+                                                blurRadius: 1.0,
+                                              ),
+                                            ],
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: NetworkImage(
+                                                  'https://cdn1.vectorstock.com/i/thumb-large/62/60/default-avatar-photo-placeholder-profile-image-vector-21666260.jpg'),
+                                            ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text('Sign out'),
+                                        SizedBox(
+                                          width: 12,
+                                        ),
+                                        Text(
+                                          // 'top.toString()',
+                                          data['name'] == null
+                                              ? 'Guest'
+                                              : data['name'],
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.white),
                                         ),
                                       ],
                                     ),
-                                    content: Text('Do you wanna Sign out?'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () async {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Cancel')),
-                                      TextButton(
-                                          onPressed: () async {
-                                            await _auth.signOut().then(
-                                                (value) =>
-                                                    Navigator.pop(context));
-                                          },
-                                          child: Text(
-                                            'Ok',
-                                            style: TextStyle(color: Colors.red),
-                                          ))
-                                    ],
-                                  );
-                                });
-
-                            // Navigator.canPop(context)
-                            //     ? Navigator.pop(context)
-                            //     : null;
-                          },
-                          title: Text('Logout'),
-                          leading: Icon(Icons.exit_to_app_rounded),
-                        ),
+                                  ),
+                                ],
+                              ),
+                              background: Image(
+                                image: NetworkImage(
+                                    'https://cdn1.vectorstock.com/i/thumb-large/62/60/default-avatar-photo-placeholder-profile-image-vector-21666260.jpg'),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          );
+                        }),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          _buildFab()
-        ],
-      ),
-    );
+                      SliverToBoxAdapter(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: userTitle('User Bag')),
+                            Divider(
+                              thickness: 1,
+                              color: Colors.grey,
+                            ),
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                splashColor: Theme.of(context).splashColor,
+                                child: ListTile(
+                                  onTap: () => Navigator.of(context)
+                                      .pushNamed(WishListScreen.routeName),
+                                  title: Text('Wishlist'),
+                                  trailing: Icon(Icons.chevron_right_rounded),
+                                  leading: AppIcons.wishList,
+                                ),
+                              ),
+                            ),
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                splashColor: Theme.of(context).splashColor,
+                                child: ListTile(
+                                  onTap: () => Navigator.of(context)
+                                      .pushNamed(CartScreen.routeName),
+                                  title: Text('Cart'),
+                                  trailing: Icon(Icons.chevron_right_rounded),
+                                  leading: AppIcons.cart,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: userTitle('User Information')),
+                            Divider(
+                              thickness: 1,
+                              color: Colors.grey,
+                            ),
+                            UserListTile(
+                                title: "Email",
+                                subtitle: data['email'] == null
+                                    ? "Email Sub"
+                                    : data['email'],
+                                icon: Icons.email),
+                            UserListTile(
+                                title: "Phone Number",
+                                subtitle: data['phoneNumber'] == null
+                                    ? "+20"
+                                    : data['phoneNumber'].toString(),
+                                icon: Icons.email),
+                            UserListTile(
+                                title: "Shipping Adress",
+                                subtitle: "",
+                                icon: Icons.email),
+                            UserListTile(
+                                title: "Joined Date",
+                                subtitle: data['joinedAt'] == null
+                                    ? "Date"
+                                    : data['joinedAt'],
+                                icon: Icons.email),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: userTitle('User settings'),
+                            ),
+                            Divider(
+                              thickness: 1,
+                              color: Colors.grey,
+                            ),
+                            ListTileSwitch(
+                              value: themeChange.darkTheme,
+                              leading: AppIcons.moon,
+                              onChanged: (value) {
+                                setState(() {
+                                  themeChange.darkTheme = value;
+                                });
+                              },
+                              visualDensity: VisualDensity.comfortable,
+                              switchType: SwitchType.cupertino,
+                              switchActiveColor: Colors.indigo,
+                              title: Text('Dark theme'),
+                            ),
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                splashColor: Theme.of(context).splashColor,
+                                child: ListTile(
+                                  onTap: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext ctx) {
+                                          return AlertDialog(
+                                            title: Row(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 6.0),
+                                                  child: Image.network(
+                                                    'https://image.flaticon.com/icons/png/128/1828/1828304.png',
+                                                    height: 20,
+                                                    width: 20,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text('Sign out'),
+                                                ),
+                                              ],
+                                            ),
+                                            content:
+                                                Text('Do you wanna Sign out?'),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () async {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('Cancel')),
+                                              TextButton(
+                                                  onPressed: () async {
+                                                    await _auth.signOut().then(
+                                                        (value) =>
+                                                            Navigator.pop(
+                                                                context));
+                                                  },
+                                                  child: Text(
+                                                    'Ok',
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ))
+                                            ],
+                                          );
+                                        });
+
+                                    // Navigator.canPop(context)
+                                    //     ? Navigator.pop(context)
+                                    //     : null;
+                                  },
+                                  title: Text('Logout'),
+                                  leading: Icon(Icons.exit_to_app_rounded),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  _buildFab()
+                ],
+              ),
+            );
+          }
+
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
   }
 
   Widget userListTile(String title, IconData icon, BuildContext context) {
