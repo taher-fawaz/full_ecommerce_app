@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/Controller/Handler/services/global_method.dart';
 import 'package:e_commerce/Controller/provider/dark_theme_provider.dart';
 import 'package:e_commerce/View/Cart/cart_page.dart';
 import 'package:e_commerce/View/Wishlist/wishlist_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
@@ -18,7 +21,16 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   bool _value = false;
   late ScrollController _scrollController;
-  var top = 0.0;
+  GlobalMethods _globalMethods = GlobalMethods();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late String _uid;
+  late String _name;
+  late String? _email;
+  late String _joinedAt;
+  late String _userImageUrl;
+  late int _phoneNumber;
+  double top = 0.0;
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +38,40 @@ class _UserScreenState extends State<UserScreen> {
     _scrollController.addListener(() {
       setState(() {});
     });
+    getData();
+  }
+
+  void getData() async {
+    final userId = _auth.currentUser!.uid;
+    final User? user = _auth.currentUser;
+
+    // _uid = user!.uid;
+
+    print('user.displayName ${_auth.currentUser!.uid}');
+    print('user.photoURL ${user!.photoURL}');
+    final DocumentSnapshot? userDoc = user.isAnonymous
+        ? null
+        : await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .get();
+    if (userDoc == null) {
+      return;
+    } else {
+      setState(() {
+        _name = userDoc.get('name');
+        _email = user.email;
+        _joinedAt = userDoc.get('joinedAt');
+        _phoneNumber = userDoc.get('phoneNumber');
+        _userImageUrl = userDoc.get('imageUrl');
+        print('user.photoURL ${_name}');
+        print('user.photoURL ${_email}');
+        print('user.photoURL ${_joinedAt}');
+        print('user.photoURL ${_phoneNumber}');
+        print('user.photoURL ${_userImageUrl}');
+      });
+    }
+    // print("name $_name");
   }
 
   @override
@@ -206,10 +252,52 @@ class _UserScreenState extends State<UserScreen> {
                       child: InkWell(
                         splashColor: Theme.of(context).splashColor,
                         child: ListTile(
-                          onTap: () {
-                            Navigator.canPop(context)
-                                ? Navigator.pop(context)
-                                : null;
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext ctx) {
+                                  return AlertDialog(
+                                    title: Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 6.0),
+                                          child: Image.network(
+                                            'https://image.flaticon.com/icons/png/128/1828/1828304.png',
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text('Sign out'),
+                                        ),
+                                      ],
+                                    ),
+                                    content: Text('Do you wanna Sign out?'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Cancel')),
+                                      TextButton(
+                                          onPressed: () async {
+                                            await _auth.signOut().then(
+                                                (value) =>
+                                                    Navigator.pop(context));
+                                          },
+                                          child: Text(
+                                            'Ok',
+                                            style: TextStyle(color: Colors.red),
+                                          ))
+                                    ],
+                                  );
+                                });
+
+                            // Navigator.canPop(context)
+                            //     ? Navigator.pop(context)
+                            //     : null;
                           },
                           title: Text('Logout'),
                           leading: Icon(Icons.exit_to_app_rounded),

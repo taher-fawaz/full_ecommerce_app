@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "228100226014",
+    "project_id": "sohola-59965",
+    "storage_bucket": "sohola-59965.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228100226014:android:d86dee165873f3eb767b4f",
+        "android_client_info": {
+          "package_name": "com.taher.e_commerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228100226014-jfb3cpv9ril8igm6bg40vt1caj4g615i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5JUO9x3IwXDatsf-vpOeu1inIzumCG_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228100226014-jfb3cpv9ril8igm6bg40vt1caj4g615i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

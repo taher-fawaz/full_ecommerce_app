@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 
-class GlobalMethods{
-Future<void> showDialogg(String title, String subtitle, Function fct, BuildContext context) async {
+class GlobalMethods {
+  Future<void> showDialogg(
+      String title, String subtitle, Function fct, BuildContext context) async {
     showDialog(
         context: context,
         builder: (BuildContext ctx) {
@@ -37,5 +37,28 @@ Future<void> showDialogg(String title, String subtitle, Function fct, BuildConte
             ],
           );
         });
+  }
+
+  void showError(BuildContext context, {String? title, String? content}) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title!),
+          content: new Text(content!),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

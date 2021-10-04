@@ -1,5 +1,7 @@
+import 'package:e_commerce/Controller/Handler/services/global_method.dart';
 import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
@@ -15,6 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   String _emailAddress = '';
   String _password = '';
+  GlobalMethods _globalMethods = GlobalMethods();
+  bool _isLoading = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final _formKey = GlobalKey<FormState>();
   @override
   void dispose() {
@@ -22,11 +28,31 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState!.save();
+
+      setState(() {
+        _isLoading = true;
+      });
+      _formKey.currentState!.save();
+      try {
+        await _auth
+            .signInWithEmailAndPassword(
+                email: _emailAddress.toLowerCase().trim(),
+                password: _password.trim())
+            .then((value) =>
+                Navigator.canPop(context) ? Navigator.pop(context) : null);
+      } on FirebaseAuthException catch (error) {
+        _globalMethods.showError(context,
+            title: "error occured", content: error.message);
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -148,32 +174,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           SizedBox(width: 10),
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  side: BorderSide(
-                                      color: ColorsConsts.backgroundColor),
-                                ),
-                              )),
-                              onPressed: _submitForm,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Login',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 17),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  AppIcons.user,
-                                ],
-                              )),
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : ElevatedButton(
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      side: BorderSide(
+                                          color: ColorsConsts.backgroundColor),
+                                    ),
+                                  )),
+                                  onPressed: _submitForm,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Login',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 17),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      AppIcons.user,
+                                    ],
+                                  )),
                           SizedBox(width: 20),
                         ],
                       ),
