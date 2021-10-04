@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/Controller/Handler/services/global_method.dart';
 import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
 import 'package:e_commerce/View/BottomBar/bottom_bar.dart';
 import 'package:e_commerce/View/Login/login.dart';
 import 'package:e_commerce/View/signUp/sign_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -15,6 +17,10 @@ class _LandingPageState extends State<LandingPage>
     with TickerProviderStateMixin {
   AnimationController? _animationController;
   Animation<double>? _animation;
+  GlobalMethods _globalMethods = GlobalMethods();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  bool _isLoading = false;
   List<String> images = [
     'https://media.istockphoto.com/photos/man-at-the-shopping-picture-id868718238?k=6&m=868718238&s=612x612&w=0&h=ZUPCx8Us3fGhnSOlecWIZ68y3H4rCiTnANtnjHk0bvo=',
     'https://thumbor.forbes.com/thumbor/fit-in/1200x0/filters%3Aformat%28jpg%29/https%3A%2F%2Fspecials-images.forbesimg.com%2Fdam%2Fimageserve%2F1138257321%2F0x0.jpg%3Ffit%3Dscale',
@@ -39,6 +45,26 @@ class _LandingPageState extends State<LandingPage>
             }
           });
     _animationController!.forward();
+  }
+
+  Future<void> _loginAnonymosly() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await _auth.signInAnonymously();
+    } on FirebaseAuthException catch (error) {
+      _globalMethods.showError(
+        context,
+        title: "error occured",
+        content: error.message,
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -207,15 +233,19 @@ class _LandingPageState extends State<LandingPage>
                 borderSide: BorderSide(width: 2, color: Colors.red),
                 child: Text('Google +'),
               ),
-              OutlineButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, BottomBarScreen.routeName);
-                },
-                shape: StadiumBorder(),
-                highlightedBorderColor: Colors.deepPurple.shade200,
-                borderSide: BorderSide(width: 2, color: Colors.deepPurple),
-                child: Text('Sign in as a guest'),
-              ),
+              _isLoading
+                  ? CircularProgressIndicator()
+                  : OutlineButton(
+                      onPressed: () {
+                        _loginAnonymosly();
+                        // Navigator.pushNamed(context, BottomBarScreen.routeName);
+                      },
+                      shape: StadiumBorder(),
+                      highlightedBorderColor: Colors.deepPurple.shade200,
+                      borderSide:
+                          BorderSide(width: 2, color: Colors.deepPurple),
+                      child: Text('Sign in as a guest'),
+                    ),
             ],
           ),
           SizedBox(
