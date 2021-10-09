@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_commerce/Controller/Handler/services/global_method.dart';
+import 'package:e_commerce/Controller/services/global_method.dart';
 import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
 import 'package:e_commerce/View/BottomBar/bottom_bar.dart';

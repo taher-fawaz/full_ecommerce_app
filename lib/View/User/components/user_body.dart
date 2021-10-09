@@ -1,10 +1,11 @@
-import 'package:e_commerce/Controller/Handler/services/global_method.dart';
+import 'package:e_commerce/Controller/services/global_method.dart';
 import 'package:e_commerce/Controller/constants/constants_values.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
 import 'package:e_commerce/Controller/provider/dark_theme_provider.dart';
 import 'package:e_commerce/View/Cart/cart_page.dart';
 import 'package:e_commerce/View/User/widget/silver_appBar.dart';
 import 'package:e_commerce/View/Wishlist/wishlist_page.dart';
+import 'package:e_commerce/View/orders/order.dart';
 import 'package:e_commerce/widget/userListTile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -100,6 +101,20 @@ class _UserPageBodyState extends State<UserPageBody> {
                           trailing: Icon(Icons.chevron_right_rounded),
                           leading: AppIcons.cart,
                         ),
+                      ),
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Theme.of(context).splashColor,
+                        child: ListTile(
+                            onTap: () => Navigator.of(context)
+                                .pushNamed(OrderScreen.routeName),
+                            title: Text('My Orders'),
+                            trailing: Icon(Icons.chevron_right_rounded),
+                            leading: Icon(Icons.shopping_basket_outlined)
+                            //AppIcons.orders,
+                            ),
                       ),
                     ),
                     Padding(

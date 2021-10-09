@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:e_commerce/Controller/provider/cart_provider.dart';
+import 'package:e_commerce/Controller/provider/products.dart';
 import 'package:e_commerce/View/Feeds/components/feeds_grid.dart';
 import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
@@ -60,6 +61,9 @@ class FeedsScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: FeedsGrid());
+        body: RefreshIndicator(
+            onRefresh: () async =>
+                Provider.of<Products>(context).FetchProducts(),
+            child: FeedsGrid()));
   }
 }

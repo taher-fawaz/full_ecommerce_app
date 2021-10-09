@@ -11,6 +11,7 @@ class FeedsGrid extends StatelessWidget {
     // final popular = ModalRoute.of(context)!.settings.arguments as String;
     final productsProvider = Provider.of<Products>(context);
     List<Product> productsList = productsProvider.products;
+    productsProvider.FetchProducts();
     // if (popular == 'popular') {
     //   productsList = productsProvider.getPopularProducts;
     // }

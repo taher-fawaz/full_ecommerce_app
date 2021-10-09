@@ -1,4 +1,4 @@
-import 'package:e_commerce/Controller/Handler/services/global_method.dart';
+import 'package:e_commerce/Controller/services/global_method.dart';
 import 'package:e_commerce/Model/favs_attr.dart';
 import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/provider/favs_provider.dart';

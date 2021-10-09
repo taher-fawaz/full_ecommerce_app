@@ -2,7 +2,7 @@ import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
 import 'package:e_commerce/View/Cart/cart_page.dart';
 import 'package:e_commerce/View/Feeds/feeds_page.dart';
-import 'package:e_commerce/View/Home/components/upload_product_form.dart';
+import 'package:e_commerce/View/upload/upload_product_form.dart';
 import 'package:e_commerce/View/User/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

@@ -14,6 +14,8 @@ class AppIcons {
   static const search = FaIcon(FontAwesomeIcons.search);
   static const moon = FaIcon(FontAwesomeIcons.moon);
   static const signOut = FontAwesomeIcons.signOutAlt;
+  static const database = FontAwesomeIcons.database;
+
   static const cross = FontAwesomeIcons.removeFormat;
   static const minus = FontAwesomeIcons.minus;
   static const plus = FontAwesomeIcons.plus;
@@ -30,5 +32,9 @@ class AppIcons {
   static const wishList = FaIcon(
     FontAwesomeIcons.heart,
     color: Colors.white,
+  );
+  static const orders = FaIcon(
+    FontAwesomeIcons.firstOrderAlt,
+    color: Colors.black,
   );
 }

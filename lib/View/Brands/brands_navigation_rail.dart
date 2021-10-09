@@ -1,3 +1,4 @@
+import 'package:e_commerce/Controller/constants/my_icons.dart';
 import 'package:e_commerce/Controller/provider/products.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -216,12 +217,33 @@ class ContentSpace extends StatelessWidget {
         child: MediaQuery.removePadding(
           removeTop: true,
           context: context,
-          child: ListView.builder(
-            itemCount: productsBrand.length,
-            itemBuilder: (BuildContext context, int index) =>
-                ChangeNotifierProvider.value(
-                    value: productsBrand[index], child: BrandsNavigationRail()),
-          ),
+          child: productsBrand.isEmpty
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      AppIcons.database,
+                      size: 80,
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Text(
+                      'No products related to this brand',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    ),
+                  ],
+                )
+              : ListView.builder(
+                  itemCount: productsBrand.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      ChangeNotifierProvider.value(
+                          value: productsBrand[index],
+                          child: BrandsNavigationRail()),
+                ),
         ),
       ),
     );

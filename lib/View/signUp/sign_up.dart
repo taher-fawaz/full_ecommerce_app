@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/Controller/Handler/services/global_method.dart';
+import 'package:e_commerce/Controller/services/global_method.dart';
 import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';

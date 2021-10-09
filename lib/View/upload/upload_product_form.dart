@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/Controller/services/global_method.dart';
 import 'package:e_commerce/Controller/constants/colors.dart';
 import 'package:e_commerce/Controller/constants/my_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class UploadProductForm extends StatefulWidget {
   static const routeName = '/UploadProductForm';
@@ -26,8 +31,13 @@ class _UploadProductFormState extends State<UploadProductForm> {
   final TextEditingController _brandController = TextEditingController();
   String? _categoryValue;
   String? _brandValue;
+  GlobalMethods _globalMethods = GlobalMethods();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   File? _pickedImage;
+  bool _isLoading = false;
+  String? url;
+  var uuid = Uuid();
   showAlertDialog(BuildContext context, String title, String body) {
     // show the dialog
     showDialog(
@@ -49,7 +59,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
     );
   }
 
-  void _trySubmit() {
+  Future<void> _trySubmit() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
 
@@ -61,7 +71,60 @@ class _UploadProductFormState extends State<UploadProductForm> {
       print(_productBrand);
       print(_productDescription);
       print(_productQuantity);
-      // Use those values to send our auth request ...
+      // Use those values to send our request ...
+    }
+    if (isValid) {
+      _formKey.currentState!.save();
+      try {
+        if (_pickedImage == null) {
+          _globalMethods.showError(
+            context,
+            title: "Error Occured",
+            content: 'Please pick an image',
+          );
+        } else {
+          setState(() {
+            _isLoading = true;
+          });
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child('productsImages')
+              .child(_productTitle + '.jpg');
+          await ref.putFile(_pickedImage!);
+          url = await ref.getDownloadURL();
+
+          final productId = uuid.v4();
+          final User? _user = _auth.currentUser;
+          final String userId = _user!.uid;
+
+          await FirebaseFirestore.instance
+              .collection("products")
+              .doc(productId)
+              .set({
+            'productId': productId,
+            'productTitle': _productTitle,
+            'price': _productPrice,
+            'productImage': url,
+            'productCategory': _productCategory,
+            'productBrand': _productBrand,
+            'productDescription': _productDescription,
+            'productQuantity': _productQuantity,
+            'userId': userId,
+            'createdAt': Timestamp.now(),
+          });
+          Navigator.canPop(context) ? Navigator.pop(context) : null;
+        }
+      } on FirebaseAuthException catch (error) {
+        _globalMethods.showError(
+          context,
+          title: "Error Occured",
+          content: error.message,
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -124,9 +187,15 @@ class _UploadProductFormState extends State<UploadProductForm> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(right: 2),
-                  child: Text('Upload',
-                      style: TextStyle(fontSize: 16),
-                      textAlign: TextAlign.center),
+                  child: _isLoading
+                      ? Center(
+                          child: Container(
+                              height: 40,
+                              width: 40,
+                              child: CircularProgressIndicator()))
+                      : Text('Upload',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center),
                 ),
                 GradientIcon(
                   AppIcons.upload,

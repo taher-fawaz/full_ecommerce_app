@@ -1,7 +1,8 @@
+import 'package:e_commerce/Controller/provider/orders_provider.dart';
 import 'package:e_commerce/View/Feeds/components/categories_feeds.dart';
 import 'package:e_commerce/View/Cart/cart_page.dart';
 import 'package:e_commerce/View/Feeds/feeds_page.dart';
-import 'package:e_commerce/View/Home/components/upload_product_form.dart';
+import 'package:e_commerce/View/upload/upload_product_form.dart';
 import 'package:e_commerce/View/Home/home_page.dart';
 import 'package:e_commerce/View/Login/login.dart';
 import 'package:e_commerce/View/Main/main_screen.dart';
@@ -21,6 +22,7 @@ import 'Controller/provider/dark_theme_provider.dart';
 import 'Controller/provider/favs_provider.dart';
 import 'Controller/provider/products.dart';
 import 'View/Brands/brands_navigation_rail.dart';
+import 'View/orders/order.dart';
 import 'View/prooduct/product_details.dart';
 
 import 'View/BottomBar/bottom_bar.dart';
@@ -53,70 +55,73 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Object>(
+    return FutureBuilder(
         future: _initialization,
         builder: (context, snapshot) {
-          // Check for errors
-          if (snapshot.hasError) {
-            return Container(child: Text("error"));
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: Text('Error occured'),
+                ),
+              ),
+            );
           }
-
-          // Once complete, show your application
-          if (snapshot.connectionState == ConnectionState.done) {
-            return MultiProvider(
-                providers: [
-                  ChangeNotifierProvider(
-                    create: (_) {
-                      return themeChangeProvider;
-                    },
-                  ),
-                  ChangeNotifierProvider(
-                    create: (_) => Products(),
-                  ),
-                  ChangeNotifierProvider(
-                    create: (_) => CartProvider(),
-                  ),
-                  ChangeNotifierProvider(
-                    create: (_) => FavsProvider(),
-                  ),
-                ],
-                child: Consumer<DarkThemeProvider>(
-                  builder: (context, value, child) {
-                    return MaterialApp(
-                        debugShowCheckedModeBanner: false,
-                        routes: {
-                          HomeScreen.routeName: (context) => HomeScreen(),
-                          CartScreen.routeName: (context) => CartScreen(),
-                          FeedsScreen.routeName: (context) => FeedsScreen(),
-                          UserScreen.routeName: (context) => UserScreen(),
-                          SearchScreen.routeName: (context) => SearchScreen(),
-                          WishListScreen.routeName: (context) =>
-                              WishListScreen(),
-                          BrandNavigationRailScreen.routeName: (context) =>
-                              BrandNavigationRailScreen(),
-                          ProductDetails.routeName: (context) =>
-                              ProductDetails(),
-                          CategoriesFeedsScreen.routeName: (context) =>
-                              CategoriesFeedsScreen(),
-                          LoginScreen.routeName: (context) => LoginScreen(),
-                          SignUpScreen.routeName: (context) => SignUpScreen(),
-                          BottomBarScreen.routeName: (context) =>
-                              BottomBarScreen(),
-                          UploadProductForm.routeName: (context) =>
-                              UploadProductForm(),
-                        },
-                        title: 'Bottom Navigation bar',
-                        theme: Styles.themeData(
-                            themeChangeProvider.darkTheme, context),
-                        home: UserState()
-                        //BottomBarScreen(),
-                        );
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) {
+                return themeChangeProvider;
+              }),
+              ChangeNotifierProvider(
+                create: (_) => Products(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => CartProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => FavsProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => OrdersProvider(),
+              ),
+            ],
+            child: Consumer<DarkThemeProvider>(
+              builder: (context, themeChangeProvider, ch) {
+                return MaterialApp(
+                  title: 'Flutter Shop',
+                  theme:
+                      Styles.themeData(themeChangeProvider.darkTheme, context),
+                  home: UserState(),
+                  //initialRoute: '/',
+                  routes: {
+                    //   '/': (ctx) => LandingPage(),
+                    BrandNavigationRailScreen.routeName: (ctx) =>
+                        BrandNavigationRailScreen(),
+                    CartScreen.routeName: (ctx) => CartScreen(),
+                    FeedsScreen.routeName: (ctx) => FeedsScreen(),
+                    WishListScreen.routeName: (ctx) => WishListScreen(),
+                    ProductDetails.routeName: (ctx) => ProductDetails(),
+                    CategoriesFeedsScreen.routeName: (ctx) =>
+                        CategoriesFeedsScreen(),
+                    LoginScreen.routeName: (ctx) => LoginScreen(),
+                    SignUpScreen.routeName: (ctx) => SignUpScreen(),
+                    BottomBarScreen.routeName: (ctx) => BottomBarScreen(),
+                    UploadProductForm.routeName: (ctx) => UploadProductForm(),
+                    // ForgetPassword.routeName: (ctx) => ForgetPassword(),
+                    OrderScreen.routeName: (ctx) => OrderScreen(),
                   },
-                ));
-          }
-
-          // Otherwise, show something whilst waiting for initialization to complete
-          return Center(child: CircularProgressIndicator());
+                );
+              },
+            ),
+          );
         });
   }
 }
