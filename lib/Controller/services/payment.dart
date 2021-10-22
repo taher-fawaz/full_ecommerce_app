@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:stripe_payment/stripe_payment.dart';
+// import 'package:stripe_payment/stripe_payment.dart';
 
 class StripeTransactionResponse {
   String? message;
@@ -23,11 +23,11 @@ class StripeService {
   };
 
   static init() {
-    StripePayment.setOptions(StripeOptions(
-        publishableKey:
-            'pk_test_51IybLKAW5XQBJRRQZdW4WIxaX6g23LLvG9kZCiiSWEurPy2WvS0r7IZ9iNzoI9Er75BQT2oF4UBS7XXbM9DMlEui00t2kuCkyn',
-        merchantId: 'test',
-        androidPayMode: 'test'));
+    // StripePayment.setOptions(StripeOptions(
+    //     publishableKey:
+    //         'pk_test_51IybLKAW5XQBJRRQZdW4WIxaX6g23LLvG9kZCiiSWEurPy2WvS0r7IZ9iNzoI9Er75BQT2oF4UBS7XXbM9DMlEui00t2kuCkyn',
+    //     merchantId: 'test',
+    //     androidPayMode: 'test'));
   }
 
   static Future<Map<String, dynamic>> createPaymentIntent(
@@ -42,23 +42,22 @@ class StripeService {
     // return null;
   }
 
-  static Future<StripeTransactionResponse> payWithNewCard(
-      {String? amount, String? currency}) async {
+  static payWithNewCard({String? amount, String? currency}) async {
     try {
-      var paymentMethod = await StripePayment.paymentRequestWithCardForm(
-          CardFormPaymentRequest());
-      var paymentIntent =
-          await StripeService.createPaymentIntent(amount!, currency!);
-      var response = await StripePayment.confirmPaymentIntent(PaymentIntent(
-          clientSecret: paymentIntent['client_secret'],
-          paymentMethodId: paymentMethod.id));
-      if (response.status == 'succeeded') {
-        return StripeTransactionResponse(
-            message: 'Transaction successful', success: true);
-      } else {
-        return StripeTransactionResponse(
-            message: 'Transaction failed', success: false);
-      }
+      // var paymentMethod = await StripePayment.paymentRequestWithCardForm(
+      //     CardFormPaymentRequest());
+      // var paymentIntent =
+      //     await StripeService.createPaymentIntent(amount!, currency!);
+      // var response = await StripePayment.confirmPaymentIntent(PaymentIntent(
+      //     clientSecret: paymentIntent['client_secret'],
+      //     paymentMethodId: paymentMethod.id));
+      // if (response.status == 'succeeded') {
+      //   return StripeTransactionResponse(
+      //       message: 'Transaction successful', success: true);
+      // } else {
+      //   return StripeTransactionResponse(
+      //       message: 'Transaction failed', success: false);
+      // }
     } on PlatformException catch (error) {
       return StripeService.getPlatformExceptionErrorResult(error);
     } catch (error) {
