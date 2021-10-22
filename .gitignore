@@ -47,3 +47,4 @@ app.*.map.json
 # Remember to never publicity share your keystore
 key.properties
 app/sohola-keystore.jks
+android/app/sohola-keystore.jks
